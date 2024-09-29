@@ -2,6 +2,7 @@ package age
 
 import (
 	"context"
+	"fmt"
 	"math/big"
 	"testing"
 
@@ -20,6 +21,8 @@ func TestCircuit(t *testing.T) {
 
 	txHash := common.HexToHash(
 		"4a18c7762036fcd4016d9ba74b40a8c3614adf9b6f7c6439c4675f9e828211c8")
+
+	fmt.Sprintf("txHash: %s", txHash)
 	tx, _, err := ec.TransactionByHash(context.Background(), txHash)
 	check(err)
 	receipt, err := ec.TransactionReceipt(context.Background(), txHash)
