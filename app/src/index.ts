@@ -8,43 +8,45 @@ async function main() {
     const proofReq = new ProofRequest();
 
     // Assume transaction hash will provided by command line
-    const hash = process.argv[2]
+    const hash = process.argv[2];
 
-    // Brevis Partner KEY IS NOT required to submit request to Brevis Gateway. 
+    // Brevis Partner KEY IS NOT required to submit request to Brevis Gateway.
     // It is used only for Brevis Partner Flow
-    const brevis_partner_key = process.argv[3]
-    const callbackAddress = process.argv[4] 
+    const brevis_partner_key = process.argv[3];
+    const callbackAddress = process.argv[4];
 
     if (hash.length === 0) {
-        console.error("empty transaction hash")
-        return 
+        console.error('empty transaction hash');
+        return;
     }
-    const provider = new ethers.providers.JsonRpcProvider("https://bsc-testnet.public.blastapi.io");
+    const provider = new ethers.providers.JsonRpcProvider('https://bsc-testnet.public.blastapi.io');
 
-    console.log(`Get transaction info for ${hash}`)
-    const transaction = await provider.getTransaction(hash)
+    console.log(`Get transaction info for ${hash}`);
+    const transaction = await provider.getTransaction(hash);
+
+    console.log('transaction her e', transaction);
 
     if (transaction.type != 0 && transaction.type != 2) {
-        console.error("only type0 and type2 transactions are supported")
-        return
+        console.error('only type0 and type2 transactions are supported');
+        return;
     }
 
     if (transaction.nonce != 0) {
-        console.error("only transaction with nonce 0 is supported by sample circuit")
-        return 
+        console.error('only transaction with nonce 0 is supported by sample circuit');
+        return;
     }
 
-    const receipt = await provider.getTransactionReceipt(hash)
-    var gas_tip_cap_or_gas_price =  ''
-    var gas_fee_cap = ''
-    if (transaction.type = 0) {
-        gas_tip_cap_or_gas_price = transaction.gasPrice?._hex ?? ''
-        gas_fee_cap = '0'
+    const receipt = await provider.getTransactionReceipt(hash);
+    var gas_tip_cap_or_gas_price = '';
+    var gas_fee_cap = '';
+    if ((transaction.type = 0)) {
+        gas_tip_cap_or_gas_price = transaction.gasPrice?._hex ?? '';
+        gas_fee_cap = '0';
     } else {
-        gas_tip_cap_or_gas_price = transaction.maxPriorityFeePerGas?._hex ?? ''
-        gas_fee_cap = transaction.maxFeePerGas?._hex ?? ''
+        gas_tip_cap_or_gas_price = transaction.maxPriorityFeePerGas?._hex ?? '';
+        gas_fee_cap = transaction.maxFeePerGas?._hex ?? '';
     }
-    
+
     proofReq.addTransaction(
         new TransactionData({
             hash: hash,
@@ -60,7 +62,7 @@ async function main() {
         }),
     );
 
-    console.log(`Send prove request for ${hash}`)
+    console.log(`Send prove request for ${hash}`);
 
     const proofRes = await prover.prove(proofReq);
     // error handling
