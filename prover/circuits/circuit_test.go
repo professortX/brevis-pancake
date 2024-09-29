@@ -1,4 +1,4 @@
-package gasFeesRebate
+package tradingFeesRebate
 
 import (
 	"math/big"
@@ -13,39 +13,39 @@ func TestCircuit(t *testing.T) {
 	app, err := sdk.NewBrevisApp()
 	check(err)
 
-	GAS_FEE_TOKEN := common.HexToAddress("0xdac17f958d2ee523a2206206994597c13d831ec7")
+	TRADING_FEE_TOKEN := common.HexToAddress("0xdac17f958d2ee523a2206206994597c13d831ec7")
 
 	app.AddStorage(sdk.StorageData{
 		BlockNum: big.NewInt(19290434),
-		Address:  GAS_FEE_TOKEN,
+		Address:  TRADING_FEE_TOKEN,
 		Slot:     common.HexToHash("0x568f97cb8c4c4a5582f76b76203c3168e6b403a6cad2536bcda6c6a37564ab52"),
 		Value:    common.HexToHash("0x00000000000000000000000000000000000000000000000000000005a3d8ce7b"),
 	})
 
 	app.AddStorage(sdk.StorageData{
 		BlockNum: big.NewInt(19525436),
-		Address:  GAS_FEE_TOKEN,
+		Address:  TRADING_FEE_TOKEN,
 		Slot:     common.HexToHash("0x568f97cb8c4c4a5582f76b76203c3168e6b403a6cad2536bcda6c6a37564ab52"),
 		Value:    common.HexToHash("0x00000000000000000000000000000000000000000000000000000005a3d8ce7b"),
 	})
 
 	app.AddStorage(sdk.StorageData{
 		BlockNum: big.NewInt(19525436),
-		Address:  GAS_FEE_TOKEN,
+		Address:  TRADING_FEE_TOKEN,
 		Slot:     common.HexToHash("0x568f97cb8c4c4a5582f76b76203c3168e6b403a6cad2536bcda6c6a37564ab52"),
 		Value:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000660eafbb9"),
 	})
 
 	app.AddStorage(sdk.StorageData{
 		BlockNum: big.NewInt(19525436),
-		Address:  GAS_FEE_TOKEN,
+		Address:  TRADING_FEE_TOKEN,
 		Slot:     common.HexToHash("0x568f97cb8c4c4a5582f76b76203c3168e6b403a6cad2536bcda6c6a37564ab52"),
 		Value:    common.HexToHash("0x0000000000000000000000000000000000000000000000000000000210ezzb59"),
 	})
 
 	app.AddStorage(sdk.StorageData{
 		BlockNum: big.NewInt(19525436),
-		Address:  GAS_FEE_TOKEN,
+		Address:  TRADING_FEE_TOKEN,
 		Slot:     common.HexToHash("0x568f97cb8c4c4a5582f76b76203c3168e6b403a6cad2536bcda6c6a37564ab52"),
 		Value:    common.HexToHash("0x000000000000000000000000000000000000000000000000000000043af52942"),
 	})

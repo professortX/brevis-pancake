@@ -1,4 +1,4 @@
-package gasFeesRebate
+package tradingFeesRebate
 
 import (
 	"github.com/brevis-network/brevis-sdk/sdk"
@@ -16,7 +16,7 @@ func (c *AppCircuit) Allocate() (maxReceipts, maxStorage, maxTransactions int) {
 	return 0, 5, 0
 }
 
-var GAS_FEE_TOKEN = sdk.ConstUint248(
+var TRADING_FEE_TOKEN = sdk.ConstUint248(
 	common.HexToAddress("0xdac17f958d2ee523a2206206994597c13d831ec7"))
 
 var UserAddress = sdk.ConstUint248(
@@ -28,28 +28,28 @@ func (c *AppCircuit) Define(api *sdk.CircuitAPI, in sdk.DataInput) error {
 	var u248 = api.Uint248
 	var b32 = api.Bytes32
 	sdk.AssertEach(slots, func(current sdk.StorageSlot) sdk.Uint248 {
-		contractIsEq := u248.IsEqual(current.Contract, GAS_FEE_TOKEN)
+		contractIsEq := u248.IsEqual(current.Contract, TRADING_FEE_TOKEN)
 
-		// mapping(address => uint) public gasFees;
+		// mapping(address => uint) public tradingFees;
 		// balance slot location 0x0000000000000000000000000000000000000000000000000000000000000002
 		// slot key = keccak(u256(userAddress).u256(location)
-		balanceSlot := api.SlotOfStructFieldInMapping(2, 0, api.ToBytes32(UserAddress))
-		balanceSlotKeyIsEq := b32.IsEqual(current.Slot, balanceSlot)
+		tradingFeeSlot := api.SlotOfStructFieldInMapping(2, 0, api.ToBytes32(UserAddress))
+		tradingFeeSlotKeyIsEq := b32.IsEqual(current.Slot, tradingFeeSlot)
 
 		return u248.And(
 			contractIsEq,
-			balanceSlotKeyIsEq,
+			tradingFeeSlotKeyIsEq,
 		)
 	})
 
-	gasFees := sdk.Map(slots, func(current sdk.StorageSlot) sdk.Uint248 {
+	tradingFees := sdk.Map(slots, func(current sdk.StorageSlot) sdk.Uint248 {
 		return api.ToUint248(current.Value)
 	})
-	totalGasFee := sdk.Sum(gasFees)
-	avgBalance, _ := u248.Div(totalGasFee, sdk.ConstUint248(5))
+	totalTradingFee := sdk.Sum(tradingFees)
+	avgTradingFee, _ := u248.Div(totalTradingFee, sdk.ConstUint248(5))
 
 	api.OutputAddress(UserAddress)
-	api.OutputUint(248, avgBalance)
-	api.OutputUint(248, avgBalance)
+	api.OutputUint(248, totalTradingFee)
+	api.OutputUint(248, avgTradingFee)
 	return nil
 }
